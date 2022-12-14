@@ -10,7 +10,7 @@
  Please run "ProcessingHandoff_SipPing_Test" before executing
  this Processing sketch.
  
- 7 Nov 2022
+ 13 Dec 2022
  Carmen Vargas
  
  */
@@ -33,19 +33,20 @@ int sipCount; // total number of sips taken thus far
 float tempF; // the temperature noted by the sensor
 
 // the minimum temperature for a drink to be considered hot 
-float tempHot = 75; 
+float tempHot = 70; 
 
 // Movie array
-String[] movies = {"birdbowl_muted_resized.mp4", "birds_muted_resized.mp4", 
-  "moving_muted_resized.mp4", "palacio_muted_resized.mp4", "pathfinder_muted_resized.mp4", 
-  "stripmalls_muted_resized.mp4", "tropicalpark_muted_resized..mp4", "vaquita_muted_resized.mp4", 
-  "ventanita_mute_captioned_resized.mp4"};
+String[] movies = {"birdbowlResized2.mp4", "birdsResized2.mp4", "movingResized2.mp4",
+                  "pathfinderResized2.mp4", "stripmallsResized2.mp4", "tropicalparkResized2.mp4",
+                  "vaquitaResized2.mp4", "ventanitaResized2.mp4", "palacioResized2.mp4",
+                  "Disney_resized.mp4", "roosters_resized_captioned.mp4"
+                };
 
 Movie[] clips = new Movie[movies.length];
 Movie startingAnim;
 
 // Introductory Image
-PImage img;
+PImage startImg;
 
 // Movie Choices
 
@@ -55,7 +56,7 @@ int choice;
 
 void setup() {
 
-  size(1400, 800);
+  size(1450, 900);
 
   // Arduino setup
   myPort = new Serial(this, Serial.list()[1], 9600);
@@ -65,7 +66,7 @@ void setup() {
     clips[i] = new Movie(this, movies[i]);
   }
 
-  img = loadImage("startinganim.png");
+  startImg = loadImage("startinganim.png");
   startingAnim = new Movie(this, "startinganim.mp4");
 
   sipCountRandomizer();
@@ -121,19 +122,17 @@ void draw() {
   }
 
   if (tempF > tempHot) {
-    if (sipCount == 0) {
+    if (sipCount < 1) {
       startingAnim.play();
       image(startingAnim, 0, 0);
-      //delay(2000);
-      //clips[choice].loop();
-      //image(clips[choice], 0, 0);
     } else {
       clips[choice].loop();
       image(clips[choice], 0, 0);
     }
   }
   else {
-    image(img, 0, 0);
+    startImg.resize(1450,875);
+    image(startImg, 0, 0);
   }
 
   delay(250);
